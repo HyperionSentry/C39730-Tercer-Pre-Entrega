@@ -1,0 +1,77 @@
+<div >
+    <div>
+        {{!-- Mensaje de bienvenida a usuario de sesión --}}
+        <h2>Bienvenido {{name}}</h2>
+        <br>
+        <h3>Mail: {{email}}</h3>
+        <h3>Role: {{role}}</h3>
+        <h3>Age: {{age}}</h3>
+        <h3>Cart: {{cart}}</h3>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          {{!-- Boton de carrito --}} 
+          <a class="btn btn-primary me-md-2" href="/carts/{{cart}}" type="button"><i class="bi bi-cart"></i></a>
+          {{!-- Boton de logout --}}  
+          <button class="btn btn-outline-primary" onclick="functionLogout()" type="button"><span class="material-symbols-outlined">logout</span></button>
+        </div>
+        <div style="display: none"><input id="carrito" name="cart" type="hydden" value="{{cart}}"></div>
+    </div>
+    <br>
+    <br>
+    
+    
+
+</div>
+
+
+{{!-- Productos --}}
+
+
+{{#if products.length}}
+{{!--{{products.cartUser}} Acá puedo traer el carrrito pero cuando quiero pasarlo como parámetro en addProductToCart(cid,pid) no puedo, aparece vacío.  --}}
+{{!-- {{cart}}Esta es otra manera de traer el carrito --}}
+<h2>Menú de productos</h2>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Image</th>
+            <th></th>
+        </tr>
+        {{#each products}}
+
+        <tr>
+          {{!-- Hace falta agregar el id del carrito en la var buyer (comprador). Que relaciona al usuario con el carrito.--}}
+            <td>{{this.title}} {{name}}</td>
+            <td>${{this.price}}</td>
+            <td><img width="100" src={{this.thumbnail}} alt="not found"></td>
+            <td><button class="btn-group me-2" role="group" aria-label="First group" onclick={addProductToCart("{{this.id}}")} >Agregar</button></td>
+        </tr>
+
+        {{/each}}
+    </table>
+</div>
+
+<nav aria-label="Page navigation">
+  <ul class="pagination justify-content-center">
+    <li class="page-item">
+      <a class="page-link" {{#if hasPrevPage}} href="/products?query={{customQuery}}&page={{prevPage}}&limit={{limitValue}}&sort={{sort}}" {{/if}}>Anterior</a>
+    </li>
+    {{#each arr}}
+    <li class="page-item"><a class="page-link" href="/products?query={{customQuery}}&page={{this}}&limit={{limitValue}}&sort={{sort}}">{{this}}</a></li>
+    {{/each}}
+    <li class="page-item">
+      <a class="page-link" {{#if hasNextPage}} href="/products?query={{customQuery}}&page={{nextPage}}&limit={{limitValue}}&sort={{sort}}" {{/if}}>Siguiente</a> 
+    </li>
+  </ul>
+</nav>
+
+{{else}}
+<h3>No hay productos</h3>
+{{/if}}
+
+
+
+
+<script src="/js/logout.js"></script>
+<script src="/js/products.js"></script>
